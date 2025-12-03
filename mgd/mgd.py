@@ -29,9 +29,15 @@ class Mgd :
         for i in range(len(angles)) :
             self.data[i][-1] = angles[i]
         self.update_transform()
+        
+    def get_oriontation(self) :
+        return self.__t06[:3,:3]
     
     def get_matrice_homogene(self):
         return self.__t06
     
     def get_position(self):
         return self.__t06[:3,3]
+    
+    def get_all_homog_matrices(self):
+        return [elf.t01,self.t12,self.t23,self.t34,self.t45,self.t56]
