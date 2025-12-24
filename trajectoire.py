@@ -5,7 +5,7 @@ import configuration as cf
 try:
     from mdd.mdd import Mdd
 except ImportError:
-    print("ERREUR : Impossible de trouver mdd/mdd.py. Vérifiez que le dossier et le fichier existent.")
+    print("ERREUR : Impossible de trouver mdd/mdd.py.")
     Mdd = None
 
 def traj(O=(0.320, -0.028, 0.250), R=0.150, V=0.05, Te=0.001):
