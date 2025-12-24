@@ -39,6 +39,6 @@ class Mdd :
           return Jg
 
     def MDD(self, qpoint):
-        Jg = self.mdd()
+        Jg = self.Jacobienne()
         Xpoint = Jg @ qpoint
         return Xpoint      
