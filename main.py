@@ -54,7 +54,6 @@ def main():
         verificateur.set_angles(q_reel)
         X_reel_list.append(verificateur.get_position())
         
-        # Position théorique (Consigne)
         verificateur.set_angles(q_ref_list[i])
         X_ref_list.append(verificateur.get_position())
 
