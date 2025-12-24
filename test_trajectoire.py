@@ -3,42 +3,63 @@ import numpy as np
 from trajectoire import traj
 
 print("--- TEST VISUALISATION ---")
-# On lance le calcul
-res = traj(O=(0.320, -0.028, 0.250), R=0.150, V=0.05)
+
+O_test = (0.320, -0.028, 0.250)
+res = traj(O=O_test, R=0.150, V=0.05)
+
 t = res["t"]
 t1, t2, tf = res["commutation"]
 
-# --- FONCTION D'AFFICHAGE DES TEMPS ---
 def plot_commutation(ax):
     for ti in [t1, t2]:
         ax.axvline(x=ti, color='k', linestyle='--', alpha=0.5)
 
-# --- TRACÉ DES COURBES ---
-# 1. Loi de mouvement
-plt.figure()
+
+
+plt.figure(figsize=(10, 8))
 plt.suptitle("Loi de mouvement s(t)")
-for i, label in enumerate(["s(t)", "vitesse", "accel"]):
+labels_s = ["Position s(t)", "Vitesse s'(t)", "Accélération s''(t)"]
+for i in range(3):
     ax = plt.subplot(3, 1, i+1)
     ax.plot(t, res["s"][i])
     plot_commutation(ax)
-    ax.set_ylabel(label); ax.grid(True)
+    ax.set_ylabel(labels_s[i]); ax.grid(True)
 plt.show()
 
-# 2. Articulaire
 q_vals = np.array(res["q"])
-plt.figure()
-plt.suptitle("Positions Articulaires q(t)")
+qd_vals = np.array(res["qd"])
+plt.figure(figsize=(12, 10))
+plt.suptitle("Positions et Vitesses Articulaires")
+
 for i in range(6):
-    ax = plt.subplot(3, 2, i+1)
+    ax = plt.subplot(6, 2, 2*i+1)
     ax.plot(t, q_vals[:, i])
     plot_commutation(ax)
-    ax.set_ylabel(f"q{i+1}"); ax.grid(True)
+    ax.set_ylabel(f"q{i+1}")
+    ax.grid(True)
+    if i==0: ax.set_title("Positions [rad]")
+    
+    ax = plt.subplot(6, 2, 2*i+2)
+    ax.plot(t, qd_vals[:, i], 'orange')
+    plot_commutation(ax)
+    ax.set_ylabel(f"dq{i+1}")
+    ax.grid(True)
+    if i==0: ax.set_title("Vitesses [rad/s]")
+    
 plt.tight_layout()
 plt.show()
 
-# 3. Trajectoire 3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.plot(res["x"][0], [0.320]*len(t), res["z"][0]) 
-ax.set_title("Trajectoire 3D")
+
+Y_fixe = [O_test[1]] * len(t) 
+
+ax.plot(res["x"][0], Y_fixe, res["z"][0], label="Trajectoire")
+ax.scatter(O_test[0], O_test[1], O_test[2], c='r', marker='o', label='Centre O')
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title("Trajectoire 3D (Espace Opérationnel)")
+ax.legend()
 plt.show()
