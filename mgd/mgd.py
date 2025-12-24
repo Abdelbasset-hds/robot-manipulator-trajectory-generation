@@ -2,9 +2,10 @@ import numpy as np
 import configuration as cf
 
 class Mgd :
-    def __init__(self,data):
-
+    def __init__(self,data, q=None):
         self.data = data
+        if q is not None:
+            self.set_angles(q)
         self.t06 = None
         self.update_transform()
         
