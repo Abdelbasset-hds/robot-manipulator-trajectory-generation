@@ -14,8 +14,11 @@ class Mgd :
         self.t23 = self.calculate_transform(self.data[2])
         self.t34 = self.calculate_transform(self.data[3])
         self.t45 = self.calculate_transform(self.data[4])
+        self.t45[:3,:3] = self.t45[:3,:3] @ np.array([[0,0,-1],[-1,0,0],[0,1,0]])
         self.t56 = self.calculate_transform(self.data[5])
+        
         self.__t06 = self.t01@self.t12@self.t23@self.t34@self.t45@self.t56
+        
         
     def calculate_transform(self,params):
         a,alpha,r,teta = params
@@ -40,4 +43,4 @@ class Mgd :
         return self.__t06[:3,3]
     
     def get_all_homog_matrices(self):
-        return [elf.t01,self.t12,self.t23,self.t34,self.t45,self.t56]
+        return [self.t01,self.t12,self.t23,self.t34,self.t45,self.t56]
